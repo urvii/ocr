@@ -5,14 +5,21 @@
   </head>
   <body>
 
-    {% if msg %}
+    {% comment %} {% if msg %}
     <h1>{{ msg }}</h1>
-    {% endif %}
+    {% endif %} {% endcomment %}
     
-    <h1>Upload new File</h1>
+   
     
     <form method=post enctype=multipart/form-data>
+     Upload Image
+
       <p><input type=file name=file>
+   {% comment %} <img src="static\uploads\offer.jpg"> {% endcomment %}
+
+       Upload Video
+       <p><input type=file name=file1>
+       {% comment %} <h2>*************************</h2> {% endcomment %}
          <input type=submit value=Upload>
     </form>
 
@@ -21,12 +28,6 @@
       <img src="{{ img_src }}">
     {% endif %}
     
-    {% if extracted_text %}
-      <p> The extracted text from the image above is: <b> {{ extracted_text }} </b></p>
-    
-    {% else %}
-      The extracted text will be displayed here
-    {% endif %}
   </body>
 </html>
     

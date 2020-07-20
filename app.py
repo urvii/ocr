@@ -2,11 +2,17 @@ import os
 
 from flask import Flask, render_template, request
 
-from ocr_core import ocr_core
-
+# from ocr_core import ocr_core
+from deepfake import deepfake_m
 
 UPLOAD_FOLDER = '/static/uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+
+IMAGE_FOLDER = '/static/images/'
+VIDEO_FOLDER = '/static/videos/'
+RESULT_FOLDER = '/static/result/'
+
 
 app = Flask(__name__)
 
@@ -14,7 +20,6 @@ app = Flask(__name__)
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/')
 def home_page():
@@ -27,23 +32,29 @@ def upload_page():
         # check if the post request has the file part
         if 'file' not in request.files:
             return render_template('upload.html', msg='No file selected')
+        
         file = request.files['file']
+        file1 = request.files['file1']
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
+            return render_template('upload.html', msg='No file selected')
+        if file1.filename == '':
             return render_template('upload.html', msg='No file selected')
 
         if file and allowed_file(file.filename):
             file.save(os.path.join(os.getcwd() + UPLOAD_FOLDER, file.filename))
 
             # call the OCR function on it
-            extracted_text = ocr_core(file)
-
+            # extracted_text = ocr_core(file)
+            result_video = deepfake_m(file,file1)
             # extract the text and display it
             return render_template('upload.html',
                                    msg='Successfully processed',
                                    extracted_text=extracted_text,
-                                   img_src=UPLOAD_FOLDER + file.filename)
+                                   img_src=IMAGE_FOLDER + file.filename,
+                                   video_src=VIDEO_FOLDER + file1.filename,
+                                   result_src=RESULT_FOLDER +result_video)
     elif request.method == 'GET':
         return render_template('upload.html')
 
