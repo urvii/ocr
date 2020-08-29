@@ -19,7 +19,7 @@ Kindly ensure you have the following installed on your machine:
 
 1. Clone the repository
 ```
-$ git clone https://github.com/ro6ley/python-ocr-example.git
+$ git clone https://github.com/urvii/ocr.git
 ```
 
 2. Check into the cloned repository
